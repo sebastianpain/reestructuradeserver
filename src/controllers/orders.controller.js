@@ -7,7 +7,7 @@ export class OrdersController{
 
     static async getOrders(req,res,next){
         try{
-            const orders= await orderService.getOrders()
+            const orders= await OrderService.getOrders()
             const response= successResponse(orders)
         res.status(HTTP_STATUS.OK).json(response)
         }catch(error){
