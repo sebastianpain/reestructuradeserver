@@ -1,13 +1,13 @@
 import { OrderDAO } from "./orders/orders.dao.js";
-import { UsersDAO } from  "./users/users.dao.js";
+import { UsersDAO } from "./users/users.dao.js";
 
-const userDao = new UsersDAO();
+const usersDao = new UsersDAO();
 const ordersDao = new OrderDAO();
 
-export const getDAOS = ()=>{
-    return {
-        userDao,
-       ordersDao
+export const getDAOS = () => {
+  return {
+    usersDao,
+    ordersDao
+  }
 }
-}
-
+ 
