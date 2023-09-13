@@ -3,8 +3,25 @@ import mongoose from 'mongoose'
 import appRouter from './src/routers/app.router.js'
 import CONFIG from './src/config/config.js'
 import nodemailer from 'nodemailer'
+import twilio from 'twilio'
+import dotenv from 'dotenv';
 
 const app = express();
+dotenv.config(); 
+
+const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID;
+const TWILIO_TOKEN = process.env.TWILIO_TOKEN;
+const TWILIO_SMS_NUMBER="+13142829460";
+const client = twilio(TWILIO_ACCOUNT_SID,TWILIO_TOKEN)
+
+app.get('/sms',async(req,res)=>{
+    let result = await client.messages.create({
+        body: 'Pruebas Twilio Coders',
+        from: TWILIO_SMS_NUMBER,
+        to: '+541156022411'
+    })
+    res.send({status:"success",result:"Message Enviado"})
+})
 
 app.use(express.json())
 app.use(express.urlencoded({express:true}))
@@ -12,13 +29,13 @@ app.use(express.urlencoded({express:true}))
 
 app.use('/api',appRouter)
 
-const transpor = nodemailer.createTransport ({
+const transport = nodemailer.createTransport ({
     service:"gmail",
     port:587,
     secure:true,
     auth:{
         user:"sebastianramirezpain@gmail.com",
-        pass:"btmlnlaxubovaqdi",
+        pass:process.env.PASS,
 
     },
     tls: {
@@ -40,10 +57,10 @@ app.get('/mail',async(req,res)=>{
                 cid:'perrito'
             }]
         }
-        const result = await transpor.sendMail(mailParams)
+        const result = await transport.sendMail(mailParams)
         res.send('Mail enviado')
     } catch(error){
-        console.log(error)
+        res.send('Mail no enviado , por favor vuelva a intentarlo')
     }
 })
 
@@ -56,12 +73,13 @@ mongoose.connect(CONFIG.MONGO_URL)
         console.log("Server Up")
     })
     server.on('error',(error)=>{
-        console.log("no connect")
+        console.error("Error al iniciar el servidor:",error);
+        mongoose.connection.close();//cierra la conexión a la base de datos
         throw error
     });
     
 })
 .catch((error)=>{
-    console.log("no server up")
+    console.error("Error al conectar a la base de datos:",error);
     throw error
-})
+});
