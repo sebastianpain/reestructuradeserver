@@ -19,7 +19,7 @@ const cadenaCaracteres =(cadena,tiempo)=>{
     return result+cadena
 }
 app.get('/primeraPeticion',(req,res)=>{
-    res.send(cadenaCaracteres('Hola estamos probando una cadena ridiculamente grande'))
+    res.send(cadenaCaracteres(`Hola estamos probando una cadena ridiculamente grande`,'5'))
 })
 
 
@@ -82,9 +82,9 @@ app.get('/mail',async(req,res)=>{
 //listen
 mongoose.connect(CONFIG.MONGO_URL)
 .then(()=>{
-    console.log("Connect DB")
+    console.log("\u001b[1;35m Connect DB")
     const server = app.listen(CONFIG.PORT,()=>{
-        console.log("Server Up")
+        console.log("\u001b[1;32m Server Up")
     })
     server.on('error',(error)=>{
         console.error("Error al iniciar el servidor:",error);
