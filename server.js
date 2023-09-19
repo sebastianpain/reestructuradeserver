@@ -1,4 +1,5 @@
 import express from 'express'
+import compression from 'express-compression'
 import mongoose from 'mongoose'
 import appRouter from './src/routers/app.router.js'
 import CONFIG from './src/config/config.js'
@@ -8,6 +9,19 @@ import dotenv from 'dotenv';
 
 const app = express();
 dotenv.config(); 
+const cadenaCaracteres =(cadena,tiempo)=>{
+    let result=''
+
+    while(tiempo>1){
+        if(tiempo & 1) result+=cadena
+        tiempo>>=1,cadena +=cadena
+}
+    return result+cadena
+}
+app.get('/primeraPeticion',(req,res)=>{
+    res.send(cadenaCaracteres('Hola estamos probando una cadena ridiculamente grande'))
+})
+
 
 const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID;
 const TWILIO_TOKEN = process.env.TWILIO_TOKEN;
