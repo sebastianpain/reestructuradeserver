@@ -37,3 +37,4 @@ export const errorResponse = (description, error = null) => {
     details: error,
   };
 };
+

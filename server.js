@@ -1,13 +1,32 @@
 import express from 'express'
-import compression from 'express-compression'
 import mongoose from 'mongoose'
 import appRouter from './src/routers/app.router.js'
 import CONFIG from './src/config/config.js'
 import nodemailer from 'nodemailer'
 import twilio from 'twilio'
 import dotenv from 'dotenv';
+import userRouter from './src/routers/users/users.router.js'
 
 const app = express();
+const port = 8081
+
+app.use('/api/users', userRouter)
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+
+app.get("/primeraPeticion", (req, res) => {
+    res.send(
+      cadenaCaracteres(
+        `Hola chicos estamos probando una cadena ridiculamente grande    `,
+        "1e5"
+      )
+    );
+  });
+  
+  
+
 dotenv.config(); 
 const cadenaCaracteres =(cadena,tiempo)=>{
     let result=''
