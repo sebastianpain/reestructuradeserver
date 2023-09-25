@@ -15,6 +15,7 @@ export class HttpError {
     this.description = description;
 
     this.status = status;
+    
 
     this.details = details;
   }
