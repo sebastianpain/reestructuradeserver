@@ -6,8 +6,9 @@ import CONFIG from './src/config/config.js';
 import nodemailer from 'nodemailer';
 import twilio from 'twilio';
 import dotenv from 'dotenv';
-import { addLogger } from './src/utils/logger.js';
+//import { addLogger } from './src/utils/logger.js';
 import userRouter from './src/routers/users/users.router.js';
+import sessionsRouter from './src/routers/orders/sessions.router.js';
 import cluster from 'cluster';
 import { cpus } from "os"; 
 const app = express();
@@ -16,6 +17,13 @@ const port = 8081;
 app.get('/operacionSencilla',(req,res)=>{
     let sum=0;
     for(let i=0; i<100000; i++){
+        sum+=i;
+    }
+    res.send({message:`Estamos probando un worker ${process.pid} el resultado de la suma ${sum}`})
+})
+app.get('/operacionCompleja',(req,res)=>{
+    let sum=0;
+    for(let i=0; i<5e8; i++){
         sum+=i;
     }
     res.send({message:`Estamos probando un worker ${process.pid} el resultado de la suma ${sum}`})
@@ -30,7 +38,16 @@ app.use('/api/users', userRouter)
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+app.use('/api/sessions',sessionsRouter);
 
+//Este endpoint sirve para poder crear el usuario virtual con variables para utilizar en el resto de endpoints
+app.get('/api/test/user',(req,res)=>{
+    let first_name = faker.name.firstName();
+    let last_name = faker.name.lastName();
+    let email = faker.internet.email();
+    let password =  faker.internet.password();
+    res.send({first_name,last_name,email,password})
+})
 
 app.get("/primeraPeticion", (req, res) => {
     res.send(
@@ -40,7 +57,7 @@ app.get("/primeraPeticion", (req, res) => {
       )
     );
   });
-  app.use(addLogger)
+  //app.use(addLogger)
   app.get("/", (req, res) => {
       res.send({mensage:`estamos probando un worker ${process.pid}`});
     });
