@@ -1,0 +1,25 @@
+{"level":"warn","message":" GET en /peticion - 11:45:01"}
+{"level":"warn","message":" GET en / - 11:45:06"}
+{"level":"warn","message":" GET en /peticion2 - 11:50:03"}
+{"level":"warn","message":"esto es una alerta"}
+{"level":"warn","message":" GET en /peticion2 - 11:50:15"}
+{"level":"warn","message":"esto es una alerta"}
+{"level":"warn","message":" GET en /peticion2 - 11:50:36"}
+{"level":"warn","message":"esto es una alerta"}
+{"level":"warn","message":" GET en /peticion2 - 11:53:42"}
+{"level":"warn","message":"esto es una alerta"}
+{"level":"warn","message":" GET en /peticion2 - 12:59:27"}
+{"level":"error","message":"Error Test Log"}
+{"level":"error"}
+{"level":"warn","message":" GET en /peticion2 - 13:00:26"}
+{"level":"error","message":"Error Test Log"}
+{"level":"error"}
+{"level":"warn","message":" GET en / - 13:00:31"}
+{"level":"error","message":"Error Test Log"}
+{"level":"error"}
+{"level":"warn","message":" GET en / - 13:01:12"}
+{"level":"error","message":"Error Test Log"}
+{"level":"error"}
+{"level":"warn","message":" GET en / - 13:01:18"}
+{"level":"error","message":"Error Test Log"}
+{"level":"error"}

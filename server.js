@@ -1,16 +1,32 @@
-import express from 'express'
-import mongoose from 'mongoose'
-import appRouter from './src/routers/app.router.js'
-import CONFIG from './src/config/config.js'
-import nodemailer from 'nodemailer'
-import twilio from 'twilio'
+import express from 'express';
+import compression from 'express-compression';
+import mongoose from 'mongoose';
+import appRouter from './src/routers/app.router.js';
+import CONFIG from './src/config/config.js';
+import nodemailer from 'nodemailer';
+import twilio from 'twilio';
 import dotenv from 'dotenv';
-import userRouter from './src/routers/users/users.router.js'
-
+import { addLogger } from './src/utils/logger.js';
+import userRouter from './src/routers/users/users.router.js';
+import cluster from 'cluster';
+import { cpus } from "os"; 
 const app = express();
-const port = 8081
+const port = 8081;
+
+app.get('/operacionSencilla',(req,res)=>{
+    let sum=0;
+    for(let i=0; i<100000; i++){
+        sum+=i;
+    }
+    res.send({message:`Estamos probando un worker ${process.pid} el resultado de la suma ${sum}`})
+})
+
+
+
+
 
 app.use('/api/users', userRouter)
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
@@ -24,6 +40,14 @@ app.get("/primeraPeticion", (req, res) => {
       )
     );
   });
+  app.use(addLogger)
+  app.get("/", (req, res) => {
+      res.send({mensage:`estamos probando un worker ${process.pid}`});
+    });
+  app.get("/peticion", (req, res) => {
+
+      res.send({mensage:"estamos probando un winston con logger"});
+    });
   
   
 
@@ -39,6 +63,10 @@ const cadenaCaracteres =(cadena,tiempo)=>{
 }
 app.get('/primeraPeticion',(req,res)=>{
     res.send(cadenaCaracteres(`Hola estamos probando una cadena ridiculamente grande`,'5'))
+})
+app.get('/peticion2',(req,res)=>{
+    req.logger.warning("esto es una alerta")
+    res.send("Estamos probando un logger avanzado con file")
 })
 
 
@@ -116,3 +144,26 @@ mongoose.connect(CONFIG.MONGO_URL)
     console.error("Error al conectar a la base de datos:",error);
     throw error
 });
+// cluster
+//console.log(cluster.isPrimary)
+
+const numeroDeNucleos = cpus().length;
+//console.log(numeroDeNucleos)
+if(cluster.isPrimary){
+    
+    console.log("soy un proceso primario")
+    for(let i=1; i<=numeroDeNucleos; i++){
+        console.log(i)
+        cluster.fork();
+        
+    }
+    //cluster.on('');
+}else{
+    
+    console.log(`Es un proceso hijo osea un worker`)
+    console.log(`Soy un numero de identificación es: ${process.pid}`)
+   /* cluster.on('message',worker=>{
+        console.log(`Mensaje recibido ${worker.process.pid}`)
+    })
+    */
+}

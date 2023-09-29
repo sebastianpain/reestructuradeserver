@@ -1,0 +1,13 @@
+warning: Soy warn GET en /peticion - 9:14:05
+warning: Soy warn GET en /peticion2 - 9:14:09
+warning: Soy warn GET en /peticion2 - 9:14:43
+warning: Soy warn GET en /peticion2 - 9:14:44
+warning: Soy warn GET en /peticion2 - 9:23:32
+warning: Soy warn GET en /peticion2 - 9:25:21
+error: Error Test Log
+fatal: Fatal Error Test Log
+warning: esto es una alerta
+warning: Soy warn GET en /peticion2 - 9:26:31
+error: Error Test Log
+fatal: Fatal Error Test Log
+warning: esto es una alerta
